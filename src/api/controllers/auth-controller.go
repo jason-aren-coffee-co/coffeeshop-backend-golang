@@ -10,6 +10,8 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jason-gill00/coffee-shop-backend-golang/src/api/database"
+
+	// "../database"
 	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -46,6 +48,7 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 		}
 		db := database.Connect()
 		database.AddUser(user, string(hashedPassword), db)
+		w.Write([]byte(`{"success":true}`))
 	}
 
 }
@@ -67,9 +70,23 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	_ = godotenv.Load(".env")
 	token, err := claims.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		panic(err)
 	}
-	fmt.Println(token)
+	// fmt.Println(token)
 	w.Header().Add("auth-token", token)
+	auth_token := r.Header.Get("auth-token")
+	fmt.Println(auth_token)
+	// jwt.Keyfunc()
+
+	decode_claims := jwt.MapClaims{}
+	jwt.ParseWithClaims(auth_token, decode_claims, func(decode_token *jwt.Token) (interface{}, error) {
+		return []byte(string(os.Getenv("JWT_SECRET"))), nil
+	})
+	// ans, _ := decode_token.SignedString(string(os.Getenv("JWT_SECRET")))
+	// fmt.Println(decode_token.Raw)
+
+	fmt.Println(decode_claims["username"])
+	w.Write([]byte(`{"success":true}`))
 
 }

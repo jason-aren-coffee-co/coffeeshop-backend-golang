@@ -12,6 +12,13 @@ import (
 // 	CoffeeOrders []database.Order `json:"coffee_orders"`
 // }
 
+func TestingFunc(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("IN THE TESTING FUNC")
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(`{"success":true}`))
+	// json.NewEncoder(w).Encode({"success":true})
+}
+
 func GetHistory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	db := database.Connect()
@@ -30,5 +37,6 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	orderBytes, _ := json.MarshalIndent(orders, "", "  ")
 	fmt.Println(string(orderBytes))
 	database.CreateOrder(orders, db)
+	w.Write([]byte(`{"success":true}`))
 
 }
