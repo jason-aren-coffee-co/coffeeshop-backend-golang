@@ -6,8 +6,7 @@ React.js Frontend GithubRepo : [Click Here](https://github.com/jason-aren-coffee
 
 Node.js Server GithubRepo : [Click Here](https://github.com/jason-aren-coffee-co/coffeeshop-backend/tree/main)
 ## Technologies
-- [x]   Node.js
-- [x]   Express API
+- [x]   Golang
 - [x]   Mysql Db
 
 ## Requirements
